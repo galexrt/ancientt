@@ -16,10 +16,10 @@ package kubernetes
 import (
 	"testing"
 
-	"github.com/cloudical-io/ancientt/pkg/config"
-	"github.com/cloudical-io/ancientt/pkg/util"
-	"github.com/cloudical-io/ancientt/tests/k8s"
 	"github.com/creasty/defaults"
+	"github.com/galexrt/ancientt/pkg/config"
+	"github.com/galexrt/ancientt/pkg/util"
+	"github.com/galexrt/ancientt/tests/k8s"
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"

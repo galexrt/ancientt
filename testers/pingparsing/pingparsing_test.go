@@ -16,8 +16,8 @@ package pingparsing
 import (
 	"testing"
 
-	"github.com/cloudical-io/ancientt/pkg/config"
-	"github.com/cloudical-io/ancientt/testers"
+	"github.com/galexrt/ancientt/pkg/config"
+	"github.com/galexrt/ancientt/testers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

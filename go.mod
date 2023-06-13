@@ -1,4 +1,4 @@
-module github.com/cloudical-io/ancientt
+module github.com/galexrt/ancientt
 
 go 1.20
 

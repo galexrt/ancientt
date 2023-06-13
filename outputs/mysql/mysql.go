@@ -16,14 +16,14 @@ package mysql
 import (
 	"fmt"
 
-	"github.com/cloudical-io/ancientt/pkg/config"
-	"github.com/cloudical-io/ancientt/pkg/util"
+	"github.com/galexrt/ancientt/pkg/config"
+	"github.com/galexrt/ancientt/pkg/util"
 	"github.com/jmoiron/sqlx"
 
 	// Include MySQL driver for mysql output
 	_ "github.com/go-sql-driver/mysql"
 
-	"github.com/cloudical-io/ancientt/outputs"
+	"github.com/galexrt/ancientt/outputs"
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 )

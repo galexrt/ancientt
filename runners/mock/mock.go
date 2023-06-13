@@ -16,11 +16,11 @@ package mock
 import (
 	"fmt"
 
-	"github.com/cloudical-io/ancientt/parsers"
-	"github.com/cloudical-io/ancientt/pkg/config"
-	"github.com/cloudical-io/ancientt/pkg/hostsfilter"
-	"github.com/cloudical-io/ancientt/runners"
-	"github.com/cloudical-io/ancientt/testers"
+	"github.com/galexrt/ancientt/parsers"
+	"github.com/galexrt/ancientt/pkg/config"
+	"github.com/galexrt/ancientt/pkg/hostsfilter"
+	"github.com/galexrt/ancientt/runners"
+	"github.com/galexrt/ancientt/testers"
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 )

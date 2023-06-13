@@ -1,9 +1,9 @@
-site_name: cloudical-io/ancientt Documentation
-repo_url: https://github.com/cloudical-io/ancientt
-site_author: Cloudical Deutschland GmbH
-site_description: "GitHub cloudical-io/ancientt project documentation"
+site_name: galexrt/ancientt Documentation
+repo_url: https://github.com/galexrt/ancientt
+site_author: Alexander Trost & Cloudical Deutschland GmbH
+site_description: "GitHub galexrt/ancientt project documentation"
 use_directory_urls: true
-copyright: 'Copyright (c) Cloudical Deutschland GmbH 2021'
+copyright: 'Copyright (c) Alexander Trost 2023, Copyright (c) Cloudical Deutschland GmbH 2021'
 theme:
   name: material
   font: false

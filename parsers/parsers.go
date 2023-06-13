@@ -17,8 +17,8 @@ import (
 	"io"
 	"time"
 
-	"github.com/cloudical-io/ancientt/outputs"
-	"github.com/cloudical-io/ancientt/pkg/config"
+	"github.com/galexrt/ancientt/outputs"
+	"github.com/galexrt/ancientt/pkg/config"
 )
 
 // Factories contains the list of all available testers.

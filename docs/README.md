@@ -58,7 +58,7 @@ See [Demos](docs/demos.md).
 Quickest way to just get ancientt built is to run the following command:
 
 ```bash
-go get -u github.com/cloudical-io/ancientt/cmd/ancientt
+go get -u github.com/galexrt/ancientt/cmd/ancientt
 ```
 
 ## Licensing

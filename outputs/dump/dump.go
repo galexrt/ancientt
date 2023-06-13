@@ -18,8 +18,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/cloudical-io/ancientt/outputs"
-	"github.com/cloudical-io/ancientt/pkg/config"
+	"github.com/galexrt/ancientt/outputs"
+	"github.com/galexrt/ancientt/pkg/config"
 	"github.com/k0kubun/pp"
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"

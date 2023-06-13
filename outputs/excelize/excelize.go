@@ -20,9 +20,9 @@ import (
 	//include excelize library for .xlsx output
 	"github.com/xuri/excelize/v2"
 
-	"github.com/cloudical-io/ancientt/outputs"
-	"github.com/cloudical-io/ancientt/pkg/config"
-	"github.com/cloudical-io/ancientt/pkg/util"
+	"github.com/galexrt/ancientt/outputs"
+	"github.com/galexrt/ancientt/pkg/config"
+	"github.com/galexrt/ancientt/pkg/util"
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 )

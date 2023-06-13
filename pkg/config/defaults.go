@@ -18,8 +18,8 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 
-	"github.com/cloudical-io/ancientt/pkg/ansible"
-	"github.com/cloudical-io/ancientt/pkg/util"
+	"github.com/galexrt/ancientt/pkg/ansible"
+	"github.com/galexrt/ancientt/pkg/util"
 )
 
 // Defaults interface to implement for config parts which allow a "verification" / Setting Defaults

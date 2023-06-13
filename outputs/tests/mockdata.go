@@ -17,7 +17,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/cloudical-io/ancientt/outputs"
+	"github.com/galexrt/ancientt/outputs"
 )
 
 // GenerateMockTableData generate some mock DataTable data for testing purposes

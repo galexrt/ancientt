@@ -20,10 +20,10 @@ import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/cloudical-io/ancientt/outputs"
-	"github.com/cloudical-io/ancientt/outputs/tests"
-	"github.com/cloudical-io/ancientt/pkg/config"
 	"github.com/creasty/defaults"
+	"github.com/galexrt/ancientt/outputs"
+	"github.com/galexrt/ancientt/outputs/tests"
+	"github.com/galexrt/ancientt/pkg/config"
 	"github.com/jmoiron/sqlx"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

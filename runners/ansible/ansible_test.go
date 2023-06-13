@@ -19,8 +19,8 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/cloudical-io/ancientt/pkg/config"
-	exectest "github.com/cloudical-io/ancientt/pkg/executor/test"
+	"github.com/galexrt/ancientt/pkg/config"
+	exectest "github.com/galexrt/ancientt/pkg/executor/test"
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"

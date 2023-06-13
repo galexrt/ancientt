@@ -18,7 +18,7 @@ import (
 	"context"
 	"os/exec"
 
-	"github.com/cloudical-io/ancientt/pkg/executor"
+	"github.com/galexrt/ancientt/pkg/executor"
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 )

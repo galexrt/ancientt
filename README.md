@@ -18,7 +18,7 @@ Container Image Tags:
 * Run network tests with the following projects:
   * [`iperf3`](https://iperf.fr/)
   * [PingParsing](https://github.com/thombashi/pingparsing)
-  * Soon more tools will be available as well, see [GitHub Issues with "testers" Label](https://github.com/cloudical-io/ancientt/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3Atesters+).
+  * Soon more tools will be available as well, see [GitHub Issues with "testers" Label](https://github.com/galexrt/ancientt/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3Atesters+).
 * Tests can be run through the following "runners":
   * Ansible (an inventory file is needed)
   * Kubernetes (a kubeconfig connected to a cluster)
@@ -77,7 +77,7 @@ See [Demos](docs/demos.md).
 The quickest way to just get `ancientt` built is to run the following command:
 
 ```bash
-go get -u github.com/cloudical-io/ancientt/cmd/ancientt
+go get -u github.com/galexrt/ancientt/cmd/ancientt
 ```
 
 ## Licensing

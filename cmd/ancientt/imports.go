@@ -18,23 +18,23 @@ package main
 
 import (
 	// Outputs
-	_ "github.com/cloudical-io/ancientt/outputs/csv"
-	_ "github.com/cloudical-io/ancientt/outputs/dump"
-	_ "github.com/cloudical-io/ancientt/outputs/excelize"
-	_ "github.com/cloudical-io/ancientt/outputs/gochart"
-	_ "github.com/cloudical-io/ancientt/outputs/mysql"
-	_ "github.com/cloudical-io/ancientt/outputs/sqlite"
+	_ "github.com/galexrt/ancientt/outputs/csv"
+	_ "github.com/galexrt/ancientt/outputs/dump"
+	_ "github.com/galexrt/ancientt/outputs/excelize"
+	_ "github.com/galexrt/ancientt/outputs/gochart"
+	_ "github.com/galexrt/ancientt/outputs/mysql"
+	_ "github.com/galexrt/ancientt/outputs/sqlite"
 
 	// Parsers
-	_ "github.com/cloudical-io/ancientt/parsers/iperf3"
-	_ "github.com/cloudical-io/ancientt/parsers/pingparsing"
+	_ "github.com/galexrt/ancientt/parsers/iperf3"
+	_ "github.com/galexrt/ancientt/parsers/pingparsing"
 
 	// Runners
-	_ "github.com/cloudical-io/ancientt/runners/ansible"
-	_ "github.com/cloudical-io/ancientt/runners/kubernetes"
-	_ "github.com/cloudical-io/ancientt/runners/mock"
+	_ "github.com/galexrt/ancientt/runners/ansible"
+	_ "github.com/galexrt/ancientt/runners/kubernetes"
+	_ "github.com/galexrt/ancientt/runners/mock"
 
 	// Testers
-	_ "github.com/cloudical-io/ancientt/testers/iperf3"
-	_ "github.com/cloudical-io/ancientt/testers/pingparsing"
+	_ "github.com/galexrt/ancientt/testers/iperf3"
+	_ "github.com/galexrt/ancientt/testers/pingparsing"
 )

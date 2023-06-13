@@ -17,14 +17,14 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/cloudical-io/ancientt/pkg/config"
-	"github.com/cloudical-io/ancientt/pkg/util"
+	"github.com/galexrt/ancientt/pkg/config"
+	"github.com/galexrt/ancientt/pkg/util"
 	"github.com/jmoiron/sqlx"
 
 	// Include sqlite driver for sqlite output
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/cloudical-io/ancientt/outputs"
+	"github.com/galexrt/ancientt/outputs"
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 )

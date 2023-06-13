@@ -17,8 +17,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/cloudical-io/ancientt/pkg/config"
-	"github.com/cloudical-io/ancientt/pkg/util"
+	"github.com/galexrt/ancientt/pkg/config"
+	"github.com/galexrt/ancientt/pkg/util"
 	"github.com/k0kubun/pp"
 	"github.com/stretchr/testify/assert"
 )

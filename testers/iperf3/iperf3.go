@@ -16,8 +16,8 @@ package iperf3
 import (
 	"fmt"
 
-	"github.com/cloudical-io/ancientt/pkg/config"
-	"github.com/cloudical-io/ancientt/testers"
+	"github.com/galexrt/ancientt/pkg/config"
+	"github.com/galexrt/ancientt/testers"
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 )

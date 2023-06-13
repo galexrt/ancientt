@@ -27,14 +27,14 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/cloudical-io/ancientt/parsers"
-	"github.com/cloudical-io/ancientt/pkg/ansible"
-	"github.com/cloudical-io/ancientt/pkg/cmdtemplate"
-	"github.com/cloudical-io/ancientt/pkg/config"
-	"github.com/cloudical-io/ancientt/pkg/executor"
-	"github.com/cloudical-io/ancientt/pkg/util"
-	"github.com/cloudical-io/ancientt/runners"
-	"github.com/cloudical-io/ancientt/testers"
+	"github.com/galexrt/ancientt/parsers"
+	"github.com/galexrt/ancientt/pkg/ansible"
+	"github.com/galexrt/ancientt/pkg/cmdtemplate"
+	"github.com/galexrt/ancientt/pkg/config"
+	"github.com/galexrt/ancientt/pkg/executor"
+	"github.com/galexrt/ancientt/pkg/util"
+	"github.com/galexrt/ancientt/runners"
+	"github.com/galexrt/ancientt/testers"
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 )
@@ -187,17 +187,19 @@ func getHosts(in []string, list map[string]*testers.Host) (map[string]*testers.H
 /*
 ansible_default_ipv4.interface and ansible_default_ipv6.interface
 ```
-{
-    "ansible_facts": {
-    [...]
-    "ansible_default_ipv4": {
-        "address": "172.16.5.100",
-        [...]
-    },
-    "ansible_default_ipv6": {
-        "address": "2a02:8071:22c8:c486:ea5f:3fc7:5039:8b74",
-        [...]
-    },
+
+	{
+	    "ansible_facts": {
+	    [...]
+	    "ansible_default_ipv4": {
+	        "address": "172.16.5.100",
+	        [...]
+	    },
+	    "ansible_default_ipv6": {
+	        "address": "2a02:8071:22c8:c486:ea5f:3fc7:5039:8b74",
+	        [...]
+	    },
+
 [...]
 }
 ```

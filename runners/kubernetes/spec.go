@@ -14,9 +14,9 @@ limitations under the License.
 package kubernetes
 
 import (
-	"github.com/cloudical-io/ancientt/pkg/k8sutil"
-	"github.com/cloudical-io/ancientt/pkg/util"
-	"github.com/cloudical-io/ancientt/testers"
+	"github.com/galexrt/ancientt/pkg/k8sutil"
+	"github.com/galexrt/ancientt/pkg/util"
+	"github.com/galexrt/ancientt/testers"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )

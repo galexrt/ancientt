@@ -19,11 +19,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/cloudical-io/ancientt/outputs"
-	"github.com/cloudical-io/ancientt/parsers"
-	"github.com/cloudical-io/ancientt/pkg/config"
-	models "github.com/cloudical-io/ancientt/pkg/models/pingparsing"
-	"github.com/cloudical-io/ancientt/pkg/util"
+	"github.com/galexrt/ancientt/outputs"
+	"github.com/galexrt/ancientt/parsers"
+	"github.com/galexrt/ancientt/pkg/config"
+	models "github.com/galexrt/ancientt/pkg/models/pingparsing"
+	"github.com/galexrt/ancientt/pkg/util"
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 )

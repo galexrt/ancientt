@@ -19,10 +19,10 @@ import (
 	"path"
 	"testing"
 
-	"github.com/cloudical-io/ancientt/outputs/tests"
-	"github.com/cloudical-io/ancientt/pkg/config"
-	"github.com/cloudical-io/ancientt/pkg/util"
 	"github.com/creasty/defaults"
+	"github.com/galexrt/ancientt/outputs/tests"
+	"github.com/galexrt/ancientt/pkg/config"
+	"github.com/galexrt/ancientt/pkg/util"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

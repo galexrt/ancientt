@@ -18,7 +18,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/cloudical-io/ancientt/testers"
+	"github.com/galexrt/ancientt/testers"
 )
 
 func TestAntiAffinity(t *testing.T) {

@@ -17,7 +17,7 @@ import (
 	"bytes"
 	"html/template"
 
-	"github.com/cloudical-io/ancientt/pkg/config"
+	"github.com/galexrt/ancientt/pkg/config"
 )
 
 // Factories contains the list of all available outputs.
