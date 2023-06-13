@@ -19,7 +19,7 @@ require (
 	github.com/stretchr/testify v1.8.4
 	github.com/wcharczuk/go-chart v2.0.2-0.20190910040548-3a7bc5543113+incompatible
 	github.com/xuri/excelize/v2 v2.7.1
-	gopkg.in/go-playground/validator.v9 v9.31.0
+	gopkg.in/go-playground/validator.v10 v10.14.1
 	gopkg.in/yaml.v2 v2.4.0
 	k8s.io/api v0.27.2
 	k8s.io/apimachinery v0.27.2
