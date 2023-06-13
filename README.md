@@ -55,11 +55,11 @@ See [Demos](docs/demos.md).
 * "Runner" interface, e.g., for Kubernetes, Ansible, etc. The "runner" abstracts the "how it is run", e.g., for Kubernetes creates Pods and Jobs, Ansible to trigger a playbook to run the test.
 * Store the result data in different formats, e.g., CSV, Excel, MySQL
   * Up for discussion: graph database ([Dgraph](https://dgraph.io/)) or TSDB support
-* "Visualization" for humans, e.g., possibility to automatically draw "shiny" graphs from the results.
+* "Visualization" for humans, e.g., the possibility to automatically draw "shiny" graphs from the results.
 
 ## Development
 
-**Golang version**: `v1.19` or higher (tested with `v1.19.6` on `linux/amd64`)
+**Golang version**: `v1.20` or higher (tested with `v1.20.4` on `linux/amd64`)
 
 ### Creating Release
 

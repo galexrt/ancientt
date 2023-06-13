@@ -1,5 +1,5 @@
 go:
-  version: 1.19
+  version: 1.20
 repository:
     path: github.com/cloudical-io/ancientt
 build:
@@ -18,12 +18,12 @@ tarball:
     files:
         - LICENSE
         - NOTICE
-        - systemd/ancientt.service
-        - systemd/sysconfig.ancientt
 crossbuild:
     platforms:
         - linux/amd64
         - linux/386
+        - linux/arm
+        - linux/arm64        
         #- darwin/amd64
         #- darwin/386
         #- windows/amd64
@@ -35,8 +35,6 @@ crossbuild:
         #- netbsd/amd64
         #- netbsd/386
         #- dragonfly/amd64
-        #- linux/arm
-        #- linux/arm64
         #- freebsd/arm
         #- openbsd/arm
         #- linux/mips64
