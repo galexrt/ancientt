@@ -7,7 +7,7 @@ require (
 	github.com/DATA-DOG/go-sqlmock v1.4.1
 	github.com/creasty/defaults v1.5.2
 	github.com/go-sql-driver/mysql v1.6.0
-	github.com/jmoiron/sqlx v1.3.4
+	github.com/jmoiron/sqlx v1.3.5
 	github.com/k0kubun/pp v3.0.1+incompatible
 	github.com/logrusorgru/aurora v2.0.3+incompatible
 	github.com/mattn/go-isatty v0.0.14
