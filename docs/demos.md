@@ -15,7 +15,7 @@ runner:
   name: kubernetes
   kubernetes:
     kubeconfig: .kube/config
-    image: quay.io/galexrt/container-toolbox:v20210915-101121-713
+    image: quay.io/galexrt/container-toolbox:v20230608-123938-740
     hosts:
       ignoreSchedulingDisabled: true
 tests:

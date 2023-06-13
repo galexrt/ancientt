@@ -18,7 +18,7 @@ import (
 	"path"
 
 	//include excelize library for .xlsx output
-	"github.com/360EntSecGroup-Skylar/excelize/v2"
+	"github.com/xuri/excelize/v2"
 
 	"github.com/cloudical-io/ancientt/outputs"
 	"github.com/cloudical-io/ancientt/pkg/config"

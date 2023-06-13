@@ -1,4 +1,4 @@
-FROM ghcr.io/galexrt/container-toolbox:v20210915-101121-713
+FROM ghcr.io/galexrt/container-toolbox:v20230608-123938-740
 
 ARG BUILD_DATE="N/A"
 ARG REVISION="N/A"

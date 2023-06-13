@@ -9,7 +9,7 @@ Container Image available from:
 Container Image Tags:
 
 * `main` - Latest build of the `main` branch.
-* `vx.y.z` - Tagged build of the application.
+* `vX.Y.Z` - Tagged build of the application.
 
 ## Features
 
@@ -25,14 +25,14 @@ Container Image Tags:
 * Results of the network tests can be output in different formats:
   * CSV
   * Dump (uses `pp.Sprint()` ([GitHub k0kubun/pp](https://github.com/k0kubun/pp), pretty print library))
-  * Excel files (Excelize)
+  * Excel files (using [Excelize](https://github.com/qax-os/excelize) library)
   * go-chart Charts (WIP)
   * MySQL
   * SQLite
 
 ## Usage
 
-Either [build (`go get`)](#building), download the Ancientt executable from the GitHub release page or use the Container image.
+Either [build (`go get`)](#building), download the `ancientt` executable from the GitHub release page or use the Container image.
 
 A config file containing test definitions must be given by flag `--testdefinition` (or short flag `-c`) or named `testdefinition.yaml` in the current directory.
 
@@ -52,9 +52,9 @@ See [Demos](docs/demos.md).
 ## Goals of this Project
 
 * A bit like Prometheus blackbox exporter which contains "definitions" for probes. The "tests" would be pluggable through a Golang interface.
-* "Runner" interface, e.g., for Kubernetes, Ansible, etc. The "runner" abstracts the "how it is run", e.g., for Kubernetes creates a Job, Ansible (download and) trigger a playbook to run the test.
-* Store result data in different formats, e.g., CSV, excel, MySQL
-  * Up for discussion: graph database ([Dgraph](https://dgraph.io/)) and / or TSDB support
+* "Runner" interface, e.g., for Kubernetes, Ansible, etc. The "runner" abstracts the "how it is run", e.g., for Kubernetes creates Pods and Jobs, Ansible to trigger a playbook to run the test.
+* Store the result data in different formats, e.g., CSV, Excel, MySQL
+  * Up for discussion: graph database ([Dgraph](https://dgraph.io/)) or TSDB support
 * "Visualization" for humans, e.g., possibility to automatically draw "shiny" graphs from the results.
 
 ## Development
@@ -63,8 +63,8 @@ See [Demos](docs/demos.md).
 
 ### Creating Release
 
-1. Add new entry for release to [`CHANGELOG.md`](CHANGELOG.md).
-2. Update [`VERSION`](VERSION) with new version number.
+1. Add a new entry for release to [`CHANGELOG.md`](CHANGELOG.md).
+2. Update [`VERSION`](VERSION) with the new version number.
 3. `git commit` and `git push` both changes (e.g., `version: update to VERSION_HERE`).
 4. Now create the git tag and push the tag `git tag VERSION_HERE` followed by `git push --tags`.
 
@@ -74,7 +74,7 @@ See [Demos](docs/demos.md).
 
 ### Building
 
-Quickest way to just get ancientt built is to run the following command:
+The quickest way to just get `ancientt` built is to run the following command:
 
 ```bash
 go get -u github.com/cloudical-io/ancientt/cmd/ancientt
@@ -82,4 +82,8 @@ go get -u github.com/cloudical-io/ancientt/cmd/ancientt
 
 ## Licensing
 
-Ancientt is licensed under the Apache 2.0 License.
+ancientt is licensed under the Apache 2.0 License.
+
+## Why the unfork?
+
+It is easier for me to update the project this way and keep it running.
