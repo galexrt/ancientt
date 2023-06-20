@@ -21,9 +21,9 @@ require (
 	github.com/wcharczuk/go-chart v2.0.2-0.20190910040548-3a7bc5543113+incompatible
 	github.com/xuri/excelize/v2 v2.7.1
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/api v0.28.0-alpha.2
-	k8s.io/apimachinery v0.28.0-alpha.2
-	k8s.io/client-go v0.28.0-alpha.2
+	k8s.io/api v0.28.0-alpha.3
+	k8s.io/apimachinery v0.28.0-alpha.3
+	k8s.io/client-go v0.28.0-alpha.3
 )
 
 require (
