@@ -15,7 +15,7 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/prometheus/common v0.44.0
 	github.com/sirupsen/logrus v1.9.3
-	github.com/spf13/cobra v1.7.0
+	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.16.0
 	github.com/stretchr/testify v1.8.4
 	github.com/wcharczuk/go-chart v2.0.2-0.20190910040548-3a7bc5543113+incompatible
