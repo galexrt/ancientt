@@ -108,4 +108,4 @@ require (
 
 replace k8s.io/kube-openapi v0.0.0-20230601164746-7562a1006961 => k8s.io/kube-openapi v0.0.0-20230606174411-725288a7abf1
 
-replace github.com/imdario/mergo => github.com/imdario/mergo v0.3.16
+replace github.com/imdario/mergo => github.com/imdario/mergo v1.0.0
