@@ -21,9 +21,8 @@ import (
 	"github.com/galexrt/ancientt/outputs"
 	"github.com/galexrt/ancientt/pkg/config"
 	"github.com/galexrt/ancientt/pkg/util"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
 	chart "github.com/wcharczuk/go-chart/v2"
+	"go.uber.org/zap"
 )
 
 // NameGoChart GoChart output name
@@ -36,15 +35,15 @@ func init() {
 // GoChart GoChart tester structure
 type GoChart struct {
 	outputs.Output
-	logger *log.Entry
+	logger *zap.Logger
 	config *config.GoChart
 	files  map[string]struct{}
 }
 
 // NewGoChartOutput return a new GoChart tester instance
-func NewGoChartOutput(cfg *config.Config, outCfg *config.Output) (outputs.Output, error) {
+func NewGoChartOutput(logger *zap.Logger, cfg *config.Config, outCfg *config.Output) (outputs.Output, error) {
 	goChart := GoChart{
-		logger: log.WithFields(logrus.Fields{"output": NameGoChart}),
+		logger: logger.With(zap.String("output", NameGoChart)),
 		config: outCfg.GoChart,
 		files:  map[string]struct{}{},
 	}
@@ -78,7 +77,7 @@ func (gc *GoChart) drawAxisChart(chartOpts *config.GoChartGraph, data outputs.Da
 	}
 
 	if len(dataTable.Headers) == 0 {
-		gc.logger.Warning("no table headers found in data table result, returning")
+		gc.logger.Warn("no table headers found in data table result, returning")
 		return nil
 	}
 

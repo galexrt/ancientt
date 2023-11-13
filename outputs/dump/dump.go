@@ -21,8 +21,7 @@ import (
 	"github.com/galexrt/ancientt/outputs"
 	"github.com/galexrt/ancientt/pkg/config"
 	"github.com/k0kubun/pp"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // NameDump Dump output name
@@ -35,15 +34,15 @@ func init() {
 // Dump Dump tester structure
 type Dump struct {
 	outputs.Output
-	logger *log.Entry
+	logger *zap.Logger
 	config *config.Dump
 	files  map[string]*os.File
 }
 
 // NewDumpOutput return a new Dump tester instance
-func NewDumpOutput(cfg *config.Config, outCfg *config.Output) (outputs.Output, error) {
+func NewDumpOutput(logger *zap.Logger, cfg *config.Config, outCfg *config.Output) (outputs.Output, error) {
 	dump := Dump{
-		logger: log.WithFields(logrus.Fields{"output": NameDump}),
+		logger: logger.With(zap.String("output", NameDump)),
 		config: outCfg.Dump,
 		files:  map[string]*os.File{},
 	}
@@ -96,9 +95,9 @@ func (d Dump) OutputFiles() []string {
 // Close close open files
 func (d Dump) Close() error {
 	for name, file := range d.files {
-		d.logger.WithFields(logrus.Fields{"filepath": name}).Debug("closing file")
+		d.logger.Debug("closing file", zap.String("filepath", name))
 		if err := file.Close(); err != nil {
-			d.logger.WithFields(logrus.Fields{"filepath": name}).Errorf("error closing file. %+v", err)
+			d.logger.Error("error closing file", zap.Error(err), zap.String("filepath", name))
 		}
 	}
 

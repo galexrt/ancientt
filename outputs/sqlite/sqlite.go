@@ -20,13 +20,12 @@ import (
 	"github.com/galexrt/ancientt/pkg/config"
 	"github.com/galexrt/ancientt/pkg/util"
 	"github.com/jmoiron/sqlx"
+	"go.uber.org/zap"
 
 	// Include sqlite driver for sqlite output
 	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/galexrt/ancientt/outputs"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
 )
 
 // NameSQLite SQLite output name
@@ -53,20 +52,20 @@ func init() {
 // SQLite SQLite tester structure
 type SQLite struct {
 	outputs.Output
-	logger *log.Entry
+	logger *zap.Logger
 	config *config.SQLite
 	dbCons map[string]*sqlx.DB
 }
 
 // NewSQLiteOutput return a new SQLite tester instance
-func NewSQLiteOutput(cfg *config.Config, outCfg *config.Output) (outputs.Output, error) {
+func NewSQLiteOutput(logger *zap.Logger, cfg *config.Config, outCfg *config.Output) (outputs.Output, error) {
 	if outCfg == nil {
 		outCfg = &config.Output{
 			SQLite: &config.SQLite{},
 		}
 	}
 	s := SQLite{
-		logger: log.WithFields(logrus.Fields{"output": NameSQLite}),
+		logger: logger.With(zap.String("output", NameSQLite)),
 		config: outCfg.SQLite,
 		dbCons: map[string]*sqlx.DB{},
 	}
@@ -232,9 +231,9 @@ func (s SQLite) OutputFiles() []string {
 // Close closes all sqlite3 connections
 func (s SQLite) Close() error {
 	for name, db := range s.dbCons {
-		s.logger.WithFields(logrus.Fields{"filepath": name}).Debug("closing db connection")
+		s.logger.Debug("closing db connection", zap.String("filepath", name))
 		if err := db.Close(); err != nil {
-			s.logger.WithFields(logrus.Fields{"filepath": name}).Errorf("error closing db connection. %+v", err)
+			s.logger.Error("error closing db connection. %+v", zap.String("filepath", name), zap.Error(err))
 		}
 	}
 

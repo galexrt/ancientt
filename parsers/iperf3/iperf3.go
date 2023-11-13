@@ -24,8 +24,7 @@ import (
 	"github.com/galexrt/ancientt/pkg/config"
 	models "github.com/galexrt/ancientt/pkg/models/iperf3"
 	"github.com/galexrt/ancientt/pkg/util"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // NameIPerf3 IPerf3 tester name
@@ -38,14 +37,14 @@ func init() {
 // IPerf3 IPerf3 tester structure
 type IPerf3 struct {
 	parsers.Parser
-	logger *log.Entry
+	logger *zap.Logger
 	config *config.Test
 }
 
 // NewIPerf3Tester return a new IPerf3 tester instance
-func NewIPerf3Tester(cfg *config.Config, test *config.Test) (parsers.Parser, error) {
+func NewIPerf3Tester(logger *zap.Logger, cfg *config.Config, test *config.Test) (parsers.Parser, error) {
 	return IPerf3{
-		logger: log.WithFields(logrus.Fields{"parers": NameIPerf3}),
+		logger: logger.With(zap.String("parers", NameIPerf3)),
 		config: test,
 	}, nil
 }
@@ -61,7 +60,7 @@ func (p IPerf3) Parse(doneCh chan struct{}, inCh <-chan parsers.Input, dataCh ch
 				return nil
 			}
 			if input.ClientHost == "" && input.ServerHost == "" && input.Tester == "" {
-				log.Warn("received input.Data with empty input.Tester and others are empty, 'signal' channel closed")
+				p.logger.Warn("received input.Data with empty input.Tester and others are empty, 'signal' channel closed")
 				close(dataCh)
 				return nil
 			}

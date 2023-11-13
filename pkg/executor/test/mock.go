@@ -16,16 +16,18 @@ package test
 
 import (
 	"context"
+	"fmt"
 	"os/exec"
 
 	"github.com/galexrt/ancientt/pkg/executor"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // MockExecutor Mock Executor implementation for tests
 type MockExecutor struct {
 	executor.Executor
+	Logger *zap.Logger
+
 	MockExecuteCommand               func(ctx context.Context, actionName string, command string, arg ...string) error
 	MockExecuteCommandWithOutput     func(ctx context.Context, actionName string, command string, arg ...string) (string, error)
 	MockExecuteCommandWithOutputByte func(ctx context.Context, actionName string, command string, arg ...string) ([]byte, error)
@@ -42,10 +44,7 @@ func (ce MockExecutor) ExecuteCommand(ctx context.Context, actionName string, co
 
 	cmd := exec.CommandContext(ctx, command, arg...)
 
-	log.WithFields(logrus.Fields{
-		"command": command,
-		"args":    arg,
-	}).Info("executing")
+	ce.Logger.With(zap.String("command", command), zap.Strings("args", arg)).Info("executing")
 
 	return cmd.Run()
 }
@@ -64,7 +63,7 @@ func (ce MockExecutor) ExecuteCommandWithOutput(ctx context.Context, actionName 
 func (ce MockExecutor) ExecuteCommandWithOutputByte(ctx context.Context, actionName string, command string, arg ...string) ([]byte, error) {
 	if ce.MockExecuteCommandWithOutputByte != nil {
 		out, err := ce.MockExecuteCommandWithOutputByte(ctx, actionName, command, arg...)
-		log.WithField("action", actionName).Debug(string(out))
+		ce.Logger.Debug(string(out), zap.String("action", actionName))
 		return out, err
 	}
 
@@ -75,14 +74,14 @@ func (ce MockExecutor) ExecuteCommandWithOutputByte(ctx context.Context, actionN
 		return nil, err
 	}
 
-	log.WithField("action", actionName).Debug(string(out))
+	ce.Logger.Debug(string(out), zap.String("action", actionName))
 
 	return out, nil
 }
 
 // SetEnv set env for command execution
 func (ce MockExecutor) SetEnv(e []string) {
-	log.WithField("action", "setEnv()").Debugf("%+v", ce.env)
+	ce.Logger.Debug(fmt.Sprintf("%+v", e), zap.String("action", "setEnv()"))
 	if ce.MockSetEnv != nil {
 		ce.MockSetEnv(e)
 		return

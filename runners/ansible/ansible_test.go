@@ -21,16 +21,22 @@ import (
 
 	"github.com/galexrt/ancientt/pkg/config"
 	exectest "github.com/galexrt/ancientt/pkg/executor/test"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap"
 )
 
 func TestGetHostsForTest(t *testing.T) {
 	var lock sync.Mutex
 	run := 1
+
+	logConfig := zap.NewProductionConfig()
+	logConfig.Level.SetLevel(zap.DebugLevel)
+	logger, err := logConfig.Build()
+	assert.NoError(t, err)
+
 	mockexec := exectest.MockExecutor{
+		Logger: logger,
 		MockExecuteCommandWithOutputByte: func(ctx context.Context, actionName string, command string, arg ...string) ([]byte, error) {
 			lock.Lock()
 			defer func() {
@@ -82,14 +88,12 @@ func TestGetHostsForTest(t *testing.T) {
 		},
 	}
 
-	log.SetLevel(log.TraceLevel)
-
 	conf := &config.RunnerAnsible{
 		InventoryFilePath: "/tmp/test-ancientt-ansible-inventory",
 	}
 	conf.SetDefaults()
 	a := Ansible{
-		logger:   log.WithFields(logrus.Fields{"runner": Name}),
+		logger:   zap.NewNop().With(zap.String("runner", Name)),
 		config:   conf,
 		executor: mockexec,
 	}

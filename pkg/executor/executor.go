@@ -20,8 +20,7 @@ import (
 	"os/exec"
 	"syscall"
 
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // Executor heavily inspired from the Executor from github.com/rook/rook/pkg/util/exec pkg
@@ -35,16 +34,14 @@ type Executor interface {
 // CommandExecutor Executor implementation
 type CommandExecutor struct {
 	Executor
-	logger *log.Entry
+	logger *zap.Logger
 	env    []string
 }
 
 // NewCommandExecutor create and return a new CommandExecutor
-func NewCommandExecutor(pkg string) Executor {
+func NewCommandExecutor(logger *zap.Logger, pkg string) Executor {
 	return CommandExecutor{
-		logger: log.WithFields(logrus.Fields{
-			"executor": pkg,
-		}),
+		logger: logger.With(zap.String("executor", pkg)),
 	}
 }
 
@@ -57,10 +54,7 @@ func (ce CommandExecutor) ExecuteCommand(ctx context.Context, actionName string,
 		Setpgid:   true,
 	}
 
-	ce.logger.WithFields(logrus.Fields{
-		"command": command,
-		"args":    arg,
-	}).Info("executing command")
+	ce.logger.Info("executing command", zap.String("command", command), zap.Strings("args", arg))
 
 	if err := cmd.Start(); err != nil {
 		return err
@@ -84,13 +78,10 @@ func (ce CommandExecutor) ExecuteCommandWithOutputByte(ctx context.Context, acti
 		Setpgid:   true,
 	}
 
-	ce.logger.WithFields(logrus.Fields{
-		"command": command,
-		"args":    arg,
-	}).Info("executing command")
+	ce.logger.Info("executing command", zap.String("command", command), zap.Strings("args", arg))
 
 	out, err := cmd.CombinedOutput()
-	ce.logger.WithField("action", actionName).Debug(string(out))
+	ce.logger.Debug(string(out), zap.String("action", actionName))
 
 	if err != nil {
 		return out, err

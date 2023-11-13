@@ -17,11 +17,12 @@ import (
 	"github.com/galexrt/ancientt/parsers"
 	"github.com/galexrt/ancientt/pkg/config"
 	"github.com/galexrt/ancientt/testers"
+	"go.uber.org/zap"
 )
 
 // Factories contains the list of all available runners.
 // The runners can each then be created using the function saved in the map.
-var Factories = make(map[string]func(cfg *config.Config) (Runner, error))
+var Factories = make(map[string]func(logger *zap.Logger, cfg *config.Config) (Runner, error))
 
 // Runner is the interface a runner has to implement.
 type Runner interface {

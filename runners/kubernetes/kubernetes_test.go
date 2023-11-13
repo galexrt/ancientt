@@ -20,10 +20,9 @@ import (
 	"github.com/galexrt/ancientt/pkg/config"
 	"github.com/galexrt/ancientt/pkg/util"
 	"github.com/galexrt/ancientt/tests/k8s"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap"
 )
 
 // TODO add tests
@@ -39,7 +38,7 @@ func TestGetHostsForTest(t *testing.T) {
 	require.Nil(t, defaults.Set(conf))
 
 	runner := &Kubernetes{
-		logger:    log.WithFields(logrus.Fields{"runner": Name, "namespace": ""}),
+		logger:    zap.NewNop().With(zap.String("runner", Name), zap.String("namespace", "")),
 		config:    conf,
 		k8sclient: clientset,
 	}

@@ -18,11 +18,12 @@ import (
 	"html/template"
 
 	"github.com/galexrt/ancientt/pkg/config"
+	"go.uber.org/zap"
 )
 
 // Factories contains the list of all available outputs.
 // The outputs can each then be created using the function saved in the map.
-var Factories = make(map[string]func(cfg *config.Config, outCfg *config.Output) (Output, error))
+var Factories = make(map[string]func(logger *zap.Logger, cfg *config.Config, outCfg *config.Output) (Output, error))
 
 // Output is the interface a output has to implement.
 type Output interface {

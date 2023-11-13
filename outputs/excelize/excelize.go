@@ -19,12 +19,11 @@ import (
 
 	//include excelize library for .xlsx output
 	"github.com/xuri/excelize/v2"
+	"go.uber.org/zap"
 
 	"github.com/galexrt/ancientt/outputs"
 	"github.com/galexrt/ancientt/pkg/config"
 	"github.com/galexrt/ancientt/pkg/util"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
 )
 
 // NameExcelize Excelize output name
@@ -37,7 +36,7 @@ func init() {
 // Excelize Excelize tester structure
 type Excelize struct {
 	outputs.Output
-	logger *log.Entry
+	logger *zap.Logger
 	config *config.Excelize
 	files  map[string]*fileState
 }
@@ -48,9 +47,9 @@ type fileState struct {
 }
 
 // NewExcelizeOutput return a new Excelize tester instance
-func NewExcelizeOutput(cfg *config.Config, outCfg *config.Output) (outputs.Output, error) {
+func NewExcelizeOutput(logger *zap.Logger, cfg *config.Config, outCfg *config.Output) (outputs.Output, error) {
 	excelize := Excelize{
-		logger: log.WithFields(logrus.Fields{"output": NameExcelize}),
+		logger: logger.With(zap.String("output", NameExcelize)),
 		config: outCfg.Excelize,
 		files:  map[string]*fileState{},
 	}
@@ -132,7 +131,7 @@ func (e Excelize) inputData(startRow int, rows [][]*outputs.Row, fState *fileSta
 
 			if err := fState.file.SetCellValue("Sheet1", fmt.Sprintf("%s%d", util.IntToChar(j+1), startRow+i), r.Value); err != nil {
 				// TODO Return a final concated error after the whole data has been written
-				e.logger.WithFields(logrus.Fields{"filepath": fState.file.Path}).Errorf("unable to set cell value in excelize file. %+v", err)
+				e.logger.Error("unable to set cell value in excelize file", zap.String("filepath", fState.file.Path), zap.Error(err))
 			}
 		}
 

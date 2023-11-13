@@ -18,11 +18,12 @@ import (
 	"time"
 
 	"github.com/galexrt/ancientt/pkg/config"
+	"go.uber.org/zap"
 )
 
 // Factories contains the list of all available testers.
 // The tester can each then be created using the function saved in the map.
-var Factories = make(map[string]func(cfg *config.Config, test *config.Test) (Tester, error))
+var Factories = make(map[string]func(logger *zap.Logger, cfg *config.Config, test *config.Test) (Tester, error))
 
 // Tester is the interface a tester has to implement
 type Tester interface {

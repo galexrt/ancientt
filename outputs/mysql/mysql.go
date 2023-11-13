@@ -19,13 +19,12 @@ import (
 	"github.com/galexrt/ancientt/pkg/config"
 	"github.com/galexrt/ancientt/pkg/util"
 	"github.com/jmoiron/sqlx"
+	"go.uber.org/zap"
 
 	// Include MySQL driver for mysql output
 	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/galexrt/ancientt/outputs"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
 )
 
 // NameMySQL MySQL output name
@@ -43,7 +42,7 @@ func init() {
 // MySQL MySQL tester structure
 type MySQL struct {
 	outputs.Output
-	logger *log.Entry
+	logger *zap.Logger
 	config *config.MySQL
 	dbCons map[string]*sqlx.DB
 }
@@ -59,14 +58,14 @@ const (
 )
 
 // NewMySQLOutput return a new MySQL tester instance
-func NewMySQLOutput(cfg *config.Config, outCfg *config.Output) (outputs.Output, error) {
+func NewMySQLOutput(logger *zap.Logger, cfg *config.Config, outCfg *config.Output) (outputs.Output, error) {
 	if outCfg == nil {
 		outCfg = &config.Output{
 			MySQL: &config.MySQL{},
 		}
 	}
 	m := MySQL{
-		logger: log.WithFields(logrus.Fields{"output": NameMySQL}),
+		logger: logger.With(zap.String("output", NameMySQL)),
 		config: outCfg.MySQL,
 		dbCons: map[string]*sqlx.DB{},
 	}
@@ -239,9 +238,9 @@ func (m MySQL) OutputFiles() []string {
 // Close closes all MySQL connections
 func (m MySQL) Close() error {
 	for name, db := range m.dbCons {
-		m.logger.WithFields(logrus.Fields{"filepath": name}).Debug("closing db connection")
+		m.logger.Debug("closing db connection", zap.String("filepath", name))
 		if err := db.Close(); err != nil {
-			m.logger.WithFields(logrus.Fields{"filepath": name}).Errorf("error closing db connection. %+v", err)
+			m.logger.Error("error closing db connection", zap.String("filepath", name), zap.Error(err))
 		}
 	}
 

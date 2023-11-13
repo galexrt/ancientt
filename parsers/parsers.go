@@ -19,11 +19,12 @@ import (
 
 	"github.com/galexrt/ancientt/outputs"
 	"github.com/galexrt/ancientt/pkg/config"
+	"go.uber.org/zap"
 )
 
 // Factories contains the list of all available testers.
 // The parser can each then be created using the function saved in the map.
-var Factories = make(map[string]func(cfg *config.Config, test *config.Test) (Parser, error))
+var Factories = make(map[string]func(logger *zap.Logger, cfg *config.Config, test *config.Test) (Parser, error))
 
 // Parser is the interface a parser has to implement
 type Parser interface {

@@ -29,10 +29,10 @@ import (
 	au "github.com/logrusorgru/aurora"
 	"github.com/mattn/go-isatty"
 	"github.com/prometheus/common/version"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 var (
@@ -46,6 +46,8 @@ var (
 	}
 	cfg      *config.Config
 	logLevel string
+
+	logger *zap.Logger
 )
 
 func init() {
@@ -88,32 +90,44 @@ func loadConfig() error {
 	return err
 }
 
+func newLogger() (*zap.Logger, error) {
+	// Logger Setup
+	loggerConfig := zap.NewProductionConfig()
+	level, err := zapcore.ParseLevel(logLevel)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse log level. %w", err)
+	}
+	loggerConfig.Level.SetLevel(level)
+
+	logger, err := loggerConfig.Build()
+	if err != nil {
+		return nil, fmt.Errorf("failed to configure logger. %w", err)
+	}
+
+	return logger, nil
+}
+
 func run(cmd *cobra.Command, args []string) error {
 	if viper.GetBool("version") {
 		fmt.Print(version.Print(os.Args[0]))
 		return nil
 	}
 
-	log.SetFormatter(&log.TextFormatter{
-		FullTimestamp: true,
-	})
-	log.SetReportCaller(false)
-
-	log.WithFields(logrus.Fields{
-		"program":   os.Args[0],
-		"version":   version.Version,
-		"branch":    version.Branch,
-		"revision":  version.Revision,
-		"go":        version.GoVersion,
-		"buildUser": version.BuildUser,
-		"buildDate": version.BuildDate,
-	}).Info("starting ancientt")
-
-	level, err := log.ParseLevel(logLevel)
+	var err error
+	logger, err = newLogger()
 	if err != nil {
-		return fmt.Errorf("failed to parse given log level. %+v", err)
+		return err
 	}
-	log.SetLevel(level)
+
+	logger.With(
+		zap.String("program", os.Args[0]),
+		zap.String("version", version.Version),
+		zap.String("branch", version.Branch),
+		zap.String("revision", version.Revision),
+		zap.String("go", version.GoVersion),
+		zap.String("buildUser", version.BuildUser),
+		zap.String("buildDate", version.BuildDate),
+	).Info("starting ancientt")
 
 	if err := loadConfig(); err != nil {
 		return err
@@ -131,15 +145,15 @@ func run(cmd *cobra.Command, args []string) error {
 	}
 
 	for i, test := range cfg.Tests {
-		log.WithFields(logrus.Fields{"runner": runnerName}).Infof("doing test '%s', %d of %d", test.Name, i+1, len(cfg.Tests))
+		logger.With(zap.String("runner", runnerName)).Info(fmt.Sprintf("doing test '%s', %d of %d", test.Name, i+1, len(cfg.Tests)))
 
-		logger, tester, parser, outputsAssembled, err := prepare(test, runnerName)
+		logger, tester, parser, outputsAssembled, err := prepare(logger, test, runnerName)
 		if err != nil {
-			logger.Errorf("error preparing test run. %+v", err)
+			logger.Error("error preparing test run", zap.Error(err))
 			if !*test.RunOptions.ContinueOnError {
 				return err
 			}
-			logger.Warnf("skippinmg test %d of %d due to error in initial prepare step", i+1, len(cfg.Tests))
+			logger.Warn(fmt.Sprintf("skipping test %d of %d due to error in initial prepare step", i+1, len(cfg.Tests)))
 			continue
 		}
 
@@ -231,11 +245,11 @@ func run(cmd *cobra.Command, args []string) error {
 		close(inCh)
 
 		if err := checkForErrors(plan); err != nil {
-			logger.Error(err)
+			logger.Error("found error during run", zap.Error(err))
 			if !*test.RunOptions.ContinueOnError {
 				return err
 			}
-			logger.Warnf("continue on error run option given for test, continuing")
+			logger.Warn("continue on error run option given for test, continuing")
 		}
 
 		wg.Wait()
@@ -259,7 +273,7 @@ func run(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	log.Info("done with tests")
+	logger.Info("done with tests")
 
 	return nil
 }
@@ -287,14 +301,14 @@ func askUserForYes() error {
 	return nil
 }
 
-func prepare(test *config.Test, runnerName string) (*log.Entry, testers.Tester, parsers.Parser, map[string]outputs.Output, error) {
+func prepare(logger *zap.Logger, test *config.Test, runnerName string) (*zap.Logger, testers.Tester, parsers.Parser, map[string]outputs.Output, error) {
 	var tester testers.Tester
 	var parser parsers.Parser
 	outputsAssembled := map[string]outputs.Output{}
 
 	// Get tester for the test
 	testerName := strings.ToLower(test.Type)
-	logger := log.WithFields(logrus.Fields{"tester": testerName, "parser": testerName, "runner": runnerName})
+	logger = logger.With(zap.String("tester", testerName), zap.String("parser", testerName), zap.String("runner", runnerName))
 
 	testerNewFunc, ok := testers.Factories[testerName]
 	if !ok {
@@ -336,7 +350,7 @@ func doOutputs(outputsAssembled map[string]outputs.Output, test *config.Test, do
 		select {
 		case data, ok := <-dataCh:
 			if !ok {
-				log.Debug("dataCh closed, in doOutputs()")
+				logger.Debug("dataCh closed, in doOutputs()")
 				return nil
 			}
 			for _, outputItem := range test.Outputs {
@@ -360,7 +374,7 @@ func checkForErrors(plan *testers.Plan) error {
 	for _, command := range plan.Commands {
 		for _, task := range command {
 			if task.Status == nil || task.Sleep != 0 {
-				log.Debug("task status is empty or is sleep task, continuing")
+				logger.Debug("task status is empty or is sleep task, continuing")
 				continue
 			}
 			// FailedHosts
@@ -411,7 +425,7 @@ func checkForErrors(plan *testers.Plan) error {
 }
 
 func runnerCleanup(runner runners.Runner, plan *testers.Plan) error {
-	log.Info("running runner cleanup func for test")
+	logger.Info("running runner cleanup func for test")
 
 	if err := runner.Cleanup(plan); err != nil {
 		return err

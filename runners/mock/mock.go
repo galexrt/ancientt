@@ -21,8 +21,7 @@ import (
 	"github.com/galexrt/ancientt/pkg/hostsfilter"
 	"github.com/galexrt/ancientt/runners"
 	"github.com/galexrt/ancientt/testers"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 const (
@@ -38,13 +37,13 @@ func init() {
 // Mock Mock Runner struct
 type Mock struct {
 	runners.Runner
-	logger *log.Entry
+	logger *zap.Logger
 }
 
 // NewRunner returns a new Mock Runner
-func NewRunner(cfg *config.Config) (runners.Runner, error) {
+func NewRunner(logger *zap.Logger, cfg *config.Config) (runners.Runner, error) {
 	return Mock{
-		logger: log.WithFields(logrus.Fields{"runner": Name}),
+		logger: logger.With(zap.String("runner", Name)),
 	}, nil
 }
 

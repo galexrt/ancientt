@@ -35,8 +35,7 @@ import (
 	"github.com/galexrt/ancientt/pkg/util"
 	"github.com/galexrt/ancientt/runners"
 	"github.com/galexrt/ancientt/testers"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 const (
@@ -56,7 +55,7 @@ func init() {
 // Ansible Ansible runner struct
 type Ansible struct {
 	runners.Runner
-	logger         *log.Entry
+	logger         *zap.Logger
 	config         *config.RunnerAnsible
 	runOptions     config.RunOptions
 	executor       executor.Executor
@@ -64,13 +63,13 @@ type Ansible struct {
 }
 
 // NewRunner return a new Ansible Runner
-func NewRunner(cfg *config.Config) (runners.Runner, error) {
+func NewRunner(logger *zap.Logger, cfg *config.Config) (runners.Runner, error) {
 	conf := cfg.Runner.Ansible
 
 	return &Ansible{
-		logger:   log.WithFields(logrus.Fields{"runner": Name, "inventoryfile": cfg.Runner.Ansible.InventoryFilePath}),
+		logger:   logger.With(zap.String("runner", Name), zap.String("inventoryfile", cfg.Runner.Ansible.InventoryFilePath)),
 		config:   conf,
-		executor: executor.NewCommandExecutor("runner:ansible"),
+		executor: executor.NewCommandExecutor(logger, "runner:ansible"),
 	}, nil
 }
 
@@ -218,7 +217,7 @@ type networkInterfaceAddress struct {
 }
 
 func (a *Ansible) getHostNetworkAddress(bctx context.Context, host string) (*testers.IPAddresses, error) {
-	a.logger.WithField("hostname", host).Debug("retrieving ansible host facts")
+	a.logger.Debug("retrieving ansible host facts", zap.String("hostname", host))
 
 	ctx, cancel := context.WithTimeout(bctx, a.config.Timeouts.CommandTimeout)
 	defer cancel()
@@ -257,7 +256,7 @@ func (a *Ansible) getHostNetworkAddress(bctx context.Context, host string) (*tes
 		return nil, fmt.Errorf("no default IP addresses for ansible host %s", host)
 	}
 
-	a.logger.WithField("hostname", host).Debug("retrieved ansible host facts")
+	a.logger.Debug("retrieved ansible host facts", zap.String("hostname", host))
 
 	return addresses, nil
 }
@@ -289,20 +288,20 @@ func (a *Ansible) Prepare(runOpts config.RunOptions, plan *testers.Plan) error {
 // Execute run the given commands and return the logs of it and / or error
 func (a *Ansible) Execute(plan *testers.Plan, parser chan<- parsers.Input) error {
 	for round, tasks := range plan.Commands {
-		a.logger.Infof("running commands round %d of %d", round+1, len(plan.Commands))
+		a.logger.Info(fmt.Sprintf("running commands round %d of %d", round+1, len(plan.Commands)))
 		for i, task := range tasks {
 			if task.Sleep != 0 {
-				a.logger.Infof("waiting %s to pass before continuing next round", task.Sleep.String())
+				a.logger.Info(fmt.Sprintf("waiting %s to pass before continuing next round", task.Sleep.String()))
 				time.Sleep(task.Sleep)
 				continue
 			}
-			a.logger.Infof("running task round %d of %d", i+1, len(tasks))
+			a.logger.Info(fmt.Sprintf("running task round %d of %d", i+1, len(tasks)))
 
 			if err := a.runTasks(round, task, plan.TestStartTime, plan.Tester, util.GetTaskName(plan.Tester, plan.TestStartTime), parser); err != nil {
 				if !*plan.RunOptions.ContinueOnError {
 					return err
 				}
-				a.logger.Warnf("continuing after err. %+v", err)
+				a.logger.Warn("continuing after err", zap.Error(err))
 			}
 		}
 	}
@@ -311,7 +310,7 @@ func (a *Ansible) Execute(plan *testers.Plan, parser chan<- parsers.Input) error
 }
 
 func (a *Ansible) runTasks(round int, mainTask *testers.Task, plannedTime time.Time, tester string, taskName string, parser chan<- parsers.Input) error {
-	logger := a.logger.WithFields(logrus.Fields{"round": round})
+	logger := a.logger.With(zap.Int("round", round))
 
 	// Create initial cmdtemplate.Variables
 	templateVars := cmdtemplate.Variables{
@@ -325,10 +324,9 @@ func (a *Ansible) runTasks(round int, mainTask *testers.Task, plannedTime time.T
 	}
 
 	if err := cmdtemplate.Template(mainTask, templateVars); err != nil {
-		erro := fmt.Errorf("failed to template main task command and / or args. %+v", err)
-		logger.Error(erro)
-		mainTask.Status.AddFailedServer(mainTask.Host, erro)
-		return erro
+		logger.Error("failed to template main task command and / or args", zap.Error(err))
+		mainTask.Status.AddFailedServer(mainTask.Host, err)
+		return err
 	}
 
 	var mainWG sync.WaitGroup
@@ -352,17 +350,16 @@ func (a *Ansible) runTasks(round int, mainTask *testers.Task, plannedTime time.T
 				fmt.Printf("EXITERR: %+v - %+v - %+v\n", exiterr, exiterr.Pid(), exiterr.ProcessState)
 
 				if err := syscall.Kill(-exiterr.Pid(), syscall.SIGKILL); err != nil {
-					logger.WithFields(logrus.Fields{"hostname": mainTask.Host, "error": err}).
-						Error("failed to kill")
+					logger.Error("failed to kill", zap.String("hostname", mainTask.Host.Name), zap.Error(err))
 				}
 			}
 			// Ignore any error after the main task is stopped
 			if mainTaskStopped {
-				logger.Debug(err)
+				logger.Debug("ignored error after main task was stopped", zap.Error(err))
 				return
 			}
 
-			logger.Error(err)
+			logger.Error("error during main task run", zap.Error(err))
 			mainTask.Status.AddFailedServer(mainTask.Host, err)
 			return
 		}
@@ -386,16 +383,15 @@ func (a *Ansible) runTasks(round int, mainTask *testers.Task, plannedTime time.T
 			ready = true
 			break
 		}
-		logger.Error(err)
+		logger.Error("", zap.Error(err))
 
-		logger.Infof("main task not running yet, sleeping 3 seconds (try: %d/%d) ...", i, tries)
+		logger.Info(fmt.Sprintf("main task not running yet, sleeping 3 seconds (try: %d/%d) ...", i, tries))
 		time.Sleep(3 * time.Second)
 	}
 
 	if ready {
 		for i, task := range mainTask.SubTasks {
-			logger.WithField("hostname", task.Host).
-				Infof("running sub task %d of %d", i+1, len(mainTask.SubTasks))
+			logger.Info(fmt.Sprintf("running sub task %d of %d", i+1, len(mainTask.SubTasks)), zap.String("hostname", task.Host.Name))
 
 			wg.Add(1)
 			go func(task *testers.Task) {
@@ -407,8 +403,7 @@ func (a *Ansible) runTasks(round int, mainTask *testers.Task, plannedTime time.T
 				// Template command and args for each task
 				if err := cmdtemplate.Template(task, templateVars); err != nil {
 					erro := fmt.Errorf("failed to template task command and / or args. %+v", err)
-					logger.WithFields(logrus.Fields{"hostname": task.Host, "error": erro}).
-						Error("error during createPodsForTasks")
+					logger.Error("error during createPodsForTasks", zap.String("hostname", task.Host.Name), zap.Error(erro))
 					mainTask.Status.AddFailedClient(task.Host, erro)
 					return
 				}
@@ -422,8 +417,7 @@ func (a *Ansible) runTasks(round int, mainTask *testers.Task, plannedTime time.T
 					fmt.Sprintf("--args=%s %s", task.Command, strings.Join(task.Args, " ")),
 				}...)
 				if err != nil {
-					logger.WithField("hostname", task.Host).
-						Error(err)
+					logger.Error("client task failed", zap.String("hostname", task.Host.Name), zap.Error(err))
 					mainTask.Status.AddFailedClient(task.Host, err)
 					return
 				}

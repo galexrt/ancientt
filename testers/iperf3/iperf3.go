@@ -18,8 +18,7 @@ import (
 
 	"github.com/galexrt/ancientt/pkg/config"
 	"github.com/galexrt/ancientt/testers"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // NameIPerf3 IPerf3 tester name
@@ -32,12 +31,12 @@ func init() {
 // IPerf3 IPerf3 tester structure
 type IPerf3 struct {
 	testers.Tester
-	logger *log.Entry
+	logger *zap.Logger
 	config *config.IPerf3
 }
 
 // NewIPerf3Tester return a new IPerf3 tester instance
-func NewIPerf3Tester(cfg *config.Config, test *config.Test) (testers.Tester, error) {
+func NewIPerf3Tester(logger *zap.Logger, cfg *config.Config, test *config.Test) (testers.Tester, error) {
 	if test == nil {
 		test = &config.Test{
 			IPerf3: &config.IPerf3{},
@@ -45,7 +44,7 @@ func NewIPerf3Tester(cfg *config.Config, test *config.Test) (testers.Tester, err
 	}
 
 	return IPerf3{
-		logger: log.WithFields(logrus.Fields{"tester": NameIPerf3}),
+		logger: logger.With(zap.String("tester", NameIPerf3)),
 		config: test.IPerf3,
 	}, nil
 }

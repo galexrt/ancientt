@@ -22,8 +22,7 @@ import (
 	"github.com/galexrt/ancientt/outputs"
 	"github.com/galexrt/ancientt/pkg/config"
 	"github.com/galexrt/ancientt/pkg/util"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // NameCSV CSV output name
@@ -36,16 +35,16 @@ func init() {
 // CSV CSV tester structure
 type CSV struct {
 	outputs.Output
-	logger  *log.Entry
+	logger  *zap.Logger
 	config  *config.CSV
 	files   map[string]*os.File
 	writers map[string]*csv.Writer
 }
 
 // NewCSVOutput return a new CSV tester instance
-func NewCSVOutput(cfg *config.Config, outCfg *config.Output) (outputs.Output, error) {
+func NewCSVOutput(logger *zap.Logger, cfg *config.Config, outCfg *config.Output) (outputs.Output, error) {
 	c := CSV{
-		logger:  log.WithFields(logrus.Fields{"output": NameCSV}),
+		logger:  logger.With(zap.String("output", NameCSV)),
 		config:  outCfg.CSV,
 		files:   map[string]*os.File{},
 		writers: map[string]*csv.Writer{},
@@ -137,17 +136,17 @@ func (c CSV) OutputFiles() []string {
 // Close close all file descriptors here
 func (c CSV) Close() error {
 	for name, writer := range c.writers {
-		c.logger.WithFields(logrus.Fields{"filepath": name}).Debug("closing file")
+		c.logger.With(zap.String("filepath", name)).Debug("closing file")
 		writer.Flush()
 		if err := writer.Error(); err != nil {
-			c.logger.WithFields(logrus.Fields{"filepath": name}).Errorf("error flushing file. %+v", err)
+			c.logger.With(zap.String("filepath", name)).Error("error flushing file", zap.Error(err))
 		}
 	}
 
 	for name, file := range c.files {
-		c.logger.WithFields(logrus.Fields{"filepath": name}).Debug("closing file")
+		c.logger.With(zap.String("filepath", name)).Debug("closing file")
 		if err := file.Close(); err != nil {
-			c.logger.WithFields(logrus.Fields{"filepath": name}).Errorf("error closing file. %+v", err)
+			c.logger.With(zap.String("filepath", name)).Error("error closing file", zap.Error(err))
 		}
 	}
 

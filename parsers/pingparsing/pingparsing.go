@@ -24,8 +24,7 @@ import (
 	"github.com/galexrt/ancientt/pkg/config"
 	models "github.com/galexrt/ancientt/pkg/models/pingparsing"
 	"github.com/galexrt/ancientt/pkg/util"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // NamePingParsing PingParsing tester name
@@ -38,14 +37,14 @@ func init() {
 // PingParsing PingParsing tester structure
 type PingParsing struct {
 	parsers.Parser
-	logger *log.Entry
+	logger *zap.Logger
 	config *config.Test
 }
 
 // NewPingParsingTester return a new PingParsing tester instance
-func NewPingParsingTester(cfg *config.Config, test *config.Test) (parsers.Parser, error) {
+func NewPingParsingTester(logger *zap.Logger, cfg *config.Config, test *config.Test) (parsers.Parser, error) {
 	return PingParsing{
-		logger: log.WithFields(logrus.Fields{"parers": NamePingParsing}),
+		logger: logger.With(zap.String("parers", NamePingParsing)),
 		config: test,
 	}, nil
 }
@@ -61,7 +60,7 @@ func (p PingParsing) Parse(doneCh chan struct{}, inCh <-chan parsers.Input, data
 				return nil
 			}
 			if input.ClientHost == "" && input.ServerHost == "" && input.Tester == "" {
-				log.Warn("received input.Data with empty input.Tester and others are empty, 'signal' channel closed")
+				p.logger.Warn("received input.Data with empty input.Tester and others are empty, 'signal' channel closed")
 				close(dataCh)
 				return nil
 			}

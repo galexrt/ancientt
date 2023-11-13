@@ -18,8 +18,7 @@ import (
 
 	"github.com/galexrt/ancientt/pkg/config"
 	"github.com/galexrt/ancientt/testers"
-	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // NamePingParsing PingParsing tester name
@@ -32,12 +31,12 @@ func init() {
 // PingParsing PingParsing tester structure
 type PingParsing struct {
 	testers.Tester
-	logger *log.Entry
+	logger *zap.Logger
 	config *config.PingParsing
 }
 
 // NewPingParsingTester return a new PingParsing tester instance
-func NewPingParsingTester(cfg *config.Config, test *config.Test) (testers.Tester, error) {
+func NewPingParsingTester(logger *zap.Logger, cfg *config.Config, test *config.Test) (testers.Tester, error) {
 	if test == nil {
 		test = &config.Test{
 			PingParsing: &config.PingParsing{},
@@ -45,7 +44,7 @@ func NewPingParsingTester(cfg *config.Config, test *config.Test) (testers.Tester
 	}
 
 	return PingParsing{
-		logger: log.WithFields(logrus.Fields{"tester": NamePingParsing}),
+		logger: logger.With(zap.String("tester", NamePingParsing)),
 		config: test.PingParsing,
 	}, nil
 }
