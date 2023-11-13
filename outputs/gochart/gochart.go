@@ -23,7 +23,7 @@ import (
 	"github.com/galexrt/ancientt/pkg/util"
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
-	chart "github.com/wcharczuk/go-chart"
+	chart "github.com/wcharczuk/go-chart/v2"
 )
 
 // NameGoChart GoChart output name
