@@ -20,7 +20,7 @@ require (
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.17.0
 	github.com/stretchr/testify v1.8.4
-	github.com/wcharczuk/go-chart v2.0.2-0.20190910040548-3a7bc5543113+incompatible
+	github.com/wcharczuk/go-chart v2.1.1+incompatible
 	github.com/xuri/excelize/v2 v2.8.0
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/api v0.28.3
