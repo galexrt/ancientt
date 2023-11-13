@@ -4,7 +4,8 @@ A tool to automate network testing tools, like iperf3, in dynamic environments s
 
 Container Image available from:
 
-* [GHCR.io](https://github.com/users/cloudical-io/packages/container/package/ancientt)
+* [GHCR.io](https://github.com/users/galexrt/packages/container/package/ancientt)
+* [Quay.io](https://quay.io/repository/galexrt/ancientt?tab=tags)
 
 Container Image Tags:
 
@@ -59,7 +60,7 @@ See [Demos](docs/demos.md).
 
 ## Development
 
-**Golang version**: `v1.20` or higher (tested with `v1.20.4` on `linux/amd64`)
+**Golang version**: `v1.21` or higher (tested with `v1.21.1` on `linux/amd64`)
 
 ### Creating Release
 
@@ -74,9 +75,9 @@ See [Demos](docs/demos.md).
 
 ### Building
 
-The quickest way to just get `ancientt` built is to run the following command:
+The quickest way to just get `ancientt` built is to run the following command (requires `go` installed on the system):
 
-```bash
+```console
 go get -u github.com/galexrt/ancientt/cmd/ancientt
 ```
 
