@@ -139,7 +139,7 @@ func run(cmd *cobra.Command, args []string) error {
 	if !ok {
 		return fmt.Errorf("runner with name %s not found", runnerName)
 	}
-	runner, err = runnerNewFunc(cfg)
+	runner, err = runnerNewFunc(logger, cfg)
 	if err != nil {
 		return err
 	}
@@ -315,7 +315,7 @@ func prepare(logger *zap.Logger, test *config.Test, runnerName string) (*zap.Log
 		return logger, nil, nil, nil, fmt.Errorf("tester with name %s not found", testerName)
 	}
 	var err error
-	if tester, err = testerNewFunc(cfg, test); err != nil {
+	if tester, err = testerNewFunc(logger, cfg, test); err != nil {
 		return logger, nil, nil, nil, err
 	}
 
@@ -324,7 +324,7 @@ func prepare(logger *zap.Logger, test *config.Test, runnerName string) (*zap.Log
 	if !ok {
 		return logger, nil, nil, nil, fmt.Errorf("parser with name %s not found", testerName)
 	}
-	if parser, err = parserNewFunc(cfg, test); err != nil {
+	if parser, err = parserNewFunc(logger, cfg, test); err != nil {
 		return logger, nil, nil, nil, err
 	}
 
@@ -336,7 +336,7 @@ func prepare(logger *zap.Logger, test *config.Test, runnerName string) (*zap.Log
 			return logger, nil, nil, nil, fmt.Errorf("output with name %s not found", outputName)
 		}
 		var err error
-		outputsAssembled[outputName], err = outputNewFunc(cfg, &outputItem)
+		outputsAssembled[outputName], err = outputNewFunc(logger, cfg, &outputItem)
 		if err != nil {
 			return logger, nil, nil, nil, err
 		}

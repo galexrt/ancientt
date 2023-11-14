@@ -201,7 +201,7 @@ func (k *Kubernetes) prepareKubernetes() error {
 			k.logger.Info("trying to create namespace")
 			ctx := context.TODO()
 			if _, err := k.k8sclient.CoreV1().Namespaces().Create(ctx, ns, metav1.CreateOptions{}); err != nil {
-				return fmt.Errorf("failed to create namespace %s^", k.config.Namespace, err)
+				return fmt.Errorf("failed to create namespace %s. %w", k.config.Namespace, err)
 			}
 			k.logger.Info("created namespace")
 		} else {
@@ -239,7 +239,7 @@ func (k *Kubernetes) createPodsForTasks(round int, mainTask *testers.Task, plan 
 	logger = logger.With(zap.String("pod", serverPodName))
 	logger.Debug("(re)creating server pod")
 	if err := k8sutil.PodRecreate(k.k8sclient, pod, k.config.Timeouts.DeleteTimeout); err != nil {
-		logger.Error(fmt.Sprintf("failed to create server pod %s/%s", k.config.Namespace, serverPodName, err, zap.Error(err)))
+		logger.Error(fmt.Sprintf("failed to create server pod %s/%s", k.config.Namespace, serverPodName), zap.Error(err))
 		mainTask.Status.AddFailedServer(mainTask.Host, err)
 		return nil
 	}
@@ -247,12 +247,12 @@ func (k *Kubernetes) createPodsForTasks(round int, mainTask *testers.Task, plan 
 	logger.Info("waiting for server pod to run")
 	running, err := k8sutil.WaitForPodToRun(k.k8sclient, k.config.Namespace, serverPodName, k.config.Timeouts.RunningTimeout)
 	if err != nil {
-		logger.Error(fmt.Sprintf("failed to wait for server pod %s/%s", k.config.Namespace, serverPodName, err, zap.Error(err)))
+		logger.Error(fmt.Sprintf("failed to wait for server pod %s/%s", k.config.Namespace, serverPodName), zap.Error(err))
 		mainTask.Status.AddFailedServer(mainTask.Host, err)
 		return nil
 	}
 	if !running {
-		logger.Error(fmt.Sprintf("server pod %s/%s not running after runTimeout", k.config.Namespace, serverPodName, zap.Error(err)))
+		logger.Error(fmt.Sprintf("server pod %s/%s not running after runTimeout", k.config.Namespace, serverPodName), zap.Error(err))
 		mainTask.Status.AddFailedServer(mainTask.Host, err)
 		return nil
 	}
@@ -261,7 +261,7 @@ func (k *Kubernetes) createPodsForTasks(round int, mainTask *testers.Task, plan 
 	ctx := context.TODO()
 	pod, err = k.k8sclient.CoreV1().Pods(k.config.Namespace).Get(ctx, serverPodName, metav1.GetOptions{})
 	if err != nil {
-		logger.Error(fmt.Sprintf("failed to get server pod %s/%s", k.config.Namespace, serverPodName, err, zap.Error(err)))
+		logger.Error(fmt.Sprintf("failed to get server pod %s/%s", k.config.Namespace, serverPodName), zap.Error(err))
 		mainTask.Status.AddFailedServer(mainTask.Host, err)
 		return nil
 	}
@@ -297,7 +297,7 @@ func (k *Kubernetes) createPodsForTasks(round int, mainTask *testers.Task, plan 
 
 			logger.Debug("(re)creating client pod")
 			if err := k8sutil.PodRecreate(k.k8sclient, pod, k.config.Timeouts.DeleteTimeout); err != nil {
-				k.logger.Error(fmt.Sprintf("failed to create pod %s/%s", k.config.Namespace, pName, err, zap.Error(err)))
+				k.logger.Error(fmt.Sprintf("failed to create pod %s/%s", k.config.Namespace, pName), zap.Error(err))
 				mainTask.Status.AddFailedClient(task.Host, err)
 				return
 			}

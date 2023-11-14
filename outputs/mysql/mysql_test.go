@@ -25,6 +25,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap"
 )
 
 func TestMySQL(t *testing.T) {
@@ -58,7 +59,7 @@ func TestMySQL(t *testing.T) {
 
 	dbx := sqlx.NewDb(db, "sqlmock")
 
-	m, err := NewMySQLOutput(nil, outCfg)
+	m, err := NewMySQLOutput(zap.NewNop(), nil, outCfg)
 	assert.Nil(t, err)
 
 	// Cast the outputs.Output to the SQLite so we can manipulate the object

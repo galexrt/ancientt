@@ -20,10 +20,11 @@ import (
 	"github.com/galexrt/ancientt/testers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap"
 )
 
 func TestIPerf3Plan(t *testing.T) {
-	tester, err := NewIPerf3Tester(nil, nil)
+	tester, err := NewIPerf3Tester(zap.NewNop(), nil, nil)
 	assert.Nil(t, err)
 	assert.NotNil(t, tester)
 

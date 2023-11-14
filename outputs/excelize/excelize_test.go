@@ -24,6 +24,7 @@ import (
 	"github.com/galexrt/ancientt/pkg/config"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap"
 )
 
 func TestDo(t *testing.T) {
@@ -44,7 +45,7 @@ func TestDo(t *testing.T) {
 	}
 	require.Nil(t, defaults.Set(outCfg))
 
-	e, err := NewExcelizeOutput(nil, outCfg)
+	e, err := NewExcelizeOutput(zap.NewNop(), nil, outCfg)
 	assert.Nil(t, err)
 	err = e.Do(table)
 	assert.Nil(t, err)
