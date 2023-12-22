@@ -22,7 +22,12 @@
 <span class=normal>22</span>
 <span class=normal>23</span>
 <span class=normal>24</span>
-<span class=normal>25</span></pre></div></td><td class=code><div><pre><span></span><code><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1</span>
+<span class=normal>25</span>
+<span class=normal>26</span>
+<span class=normal>27</span>
+<span class=normal>28</span>
+<span class=normal>29</span>
+<span class=normal>30</span></pre></div></td><td class=code><div><pre><span></span><code><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1</span>
 <span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class="l l-Scalar l-Scalar-Plain">ClusterRole</span>
 <span class=nt>metadata</span><span class=p>:</span>
 <span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class="l l-Scalar l-Scalar-Plain">ancientt</span>
@@ -41,6 +46,11 @@
 <span class=w>      </span><span class="p p-Indicator">-</span><span class=w> </span><span class="l l-Scalar l-Scalar-Plain">list</span>
 <span class=w>      </span><span class="p p-Indicator">-</span><span class=w> </span><span class="l l-Scalar l-Scalar-Plain">create</span>
 <span class=w>      </span><span class="p p-Indicator">-</span><span class=w> </span><span class="l l-Scalar l-Scalar-Plain">delete</span>
+<span class=w>  </span><span class="p p-Indicator">-</span><span class=w> </span><span class=nt>apiGroups</span><span class=p>:</span><span class=w> </span><span class="p p-Indicator">[</span><span class=s>&quot;&quot;</span><span class="p p-Indicator">]</span>
+<span class=w>    </span><span class=nt>resources</span><span class=p>:</span><span class=w> </span><span class="p p-Indicator">[</span><span class=s>&quot;pods/log&quot;</span><span class="p p-Indicator">]</span>
+<span class=w>    </span><span class=nt>verbs</span><span class=p>:</span>
+<span class=w>      </span><span class="p p-Indicator">-</span><span class=w> </span><span class=s>&quot;get&quot;</span>
+<span class=w>      </span><span class="p p-Indicator">-</span><span class=w> </span><span class=s>&quot;list&quot;</span>
 <span class=w>  </span><span class=c1># Selecting the nodes</span>
 <span class=w>  </span><span class="p p-Indicator">-</span><span class=w> </span><span class=nt>apiGroups</span><span class=p>:</span><span class=w> </span><span class="p p-Indicator">[</span><span class=s>&quot;&quot;</span><span class="p p-Indicator">]</span>
 <span class=w>    </span><span class=nt>resources</span><span class=p>:</span><span class=w> </span><span class="p p-Indicator">[</span><span class=s>&quot;nodes&quot;</span><span class="p p-Indicator">]</span>
