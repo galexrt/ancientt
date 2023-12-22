@@ -22,6 +22,11 @@ rules:
       - list
       - create
       - delete
+  - apiGroups: [""]
+    resources: ["pods/log"]
+    verbs:
+      - "get"
+      - "list"
   # Selecting the nodes
   - apiGroups: [""]
     resources: ["nodes"]
