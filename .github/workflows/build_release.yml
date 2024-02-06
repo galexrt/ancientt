@@ -32,7 +32,7 @@ jobs:
           promu release .tarballs
 
       - name: Push to GHCR.io
-        uses: elgohr/Publish-Docker-Github-Action@3.04
+        uses: elgohr/Publish-Docker-Github-Action@v5
         with:
           name: ${{ github.repository }}
           registry: ghcr.io
@@ -41,7 +41,7 @@ jobs:
           tag_names: true
 
       - name: Push to Quay.io
-        uses: elgohr/Publish-Docker-Github-Action@3.04
+        uses: elgohr/Publish-Docker-Github-Action@v5
         with:
           name: ${{ github.repository }}
           registry: quay.io
