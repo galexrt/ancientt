@@ -23,9 +23,9 @@ require (
 	github.com/xuri/excelize/v2 v2.8.0
 	go.uber.org/zap v1.26.0
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/api v0.28.3
-	k8s.io/apimachinery v0.28.3
-	k8s.io/client-go v0.28.3
+	k8s.io/api v0.29.2
+	k8s.io/apimachinery v0.29.2
+	k8s.io/client-go v0.29.2
 )
 
 require (
