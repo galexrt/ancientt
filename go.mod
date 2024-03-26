@@ -8,7 +8,7 @@ require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/creasty/defaults v1.7.0
 	github.com/go-playground/validator/v10 v10.18.0
-	github.com/go-sql-driver/mysql v1.7.1
+	github.com/go-sql-driver/mysql v1.8.1
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/k0kubun/pp v3.0.1+incompatible
 	github.com/logrusorgru/aurora v2.0.3+incompatible
@@ -29,6 +29,7 @@ require (
 )
 
 require (
+	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/blend/go-sdk v2.0.0+incompatible // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
