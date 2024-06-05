@@ -7,7 +7,7 @@ toolchain go1.21.1
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/creasty/defaults v1.7.0
-	github.com/go-playground/validator/v10 v10.18.0
+	github.com/go-playground/validator/v10 v10.21.0
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/k0kubun/pp v3.0.1+incompatible
