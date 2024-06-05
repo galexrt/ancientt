@@ -60,7 +60,7 @@ See [Demos](docs/demos.md).
 
 ## Development
 
-**Golang version**: `v1.21` or higher (tested with `v1.21.1` on `linux/amd64`)
+**Golang version**: `v1.22` or higher (tested with `v1.22.4` on `linux/amd64`)
 
 ### Creating Release
 
