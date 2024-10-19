@@ -1,6 +1,6 @@
 # ancientt
 
-A tool to automate network testing tools, like iperf3, in dynamic environments such as Kubernetes and more to come dynamic environments.
+A tool to automate network testing tools, like iperf3, in dynamic environments such as Kubernetes and more to come.
 
 Container Image available from:
 
