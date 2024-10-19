@@ -87,4 +87,6 @@ ancientt is licensed under the Apache 2.0 License.
 
 ## Why the unfork?
 
-It is easier for me to update the project this way and keep it running.
+`ancientt` was initially created at [Cloudical](https://cloudical.io).
+
+It is easier for me to update the project this way and keep it going.
