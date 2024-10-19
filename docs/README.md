@@ -35,7 +35,7 @@ ancientt --testdefinition your-testdefinitions.yaml
 
 ## Demos
 
-See [Demos](docs/demos.md).
+See [Demos](demos.md).
 
 ## Goals of this Project
 
