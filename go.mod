@@ -13,7 +13,7 @@ require (
 	github.com/k0kubun/pp v3.0.1+incompatible
 	github.com/logrusorgru/aurora v2.0.3+incompatible
 	github.com/mattn/go-isatty v0.0.20
-	github.com/mattn/go-sqlite3 v1.14.22
+	github.com/mattn/go-sqlite3 v1.14.28
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/prometheus/common v0.54.0
 	github.com/spf13/cobra v1.8.0
