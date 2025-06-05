@@ -2,7 +2,7 @@ module github.com/galexrt/ancientt
 
 go 1.22.0
 
-toolchain go1.22.4
+toolchain go1.24.4
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
