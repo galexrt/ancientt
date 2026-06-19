@@ -10,7 +10,7 @@ jobs:
     container:
       image: "squidfunk/mkdocs-material:latest"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: false
 
