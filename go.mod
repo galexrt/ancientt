@@ -11,7 +11,7 @@ require (
 	github.com/k0kubun/pp v3.0.1+incompatible
 	github.com/logrusorgru/aurora v2.0.3+incompatible
 	github.com/mattn/go-isatty v0.0.23
-	github.com/mattn/go-sqlite3 v1.14.48
+	github.com/mattn/go-sqlite3 v1.14.52
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/prometheus/common v0.70.0
 	github.com/spf13/cobra v1.10.2
