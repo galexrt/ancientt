@@ -15,6 +15,7 @@ package k8sutil
 
 import (
 	corev1 "k8s.io/api/core/v1"
+	"k8s.io/klog/v2"
 )
 
 // INFO This code has been taken from the Rook project due to Golang dependency and modified to suite ancientt's needs.
@@ -27,7 +28,9 @@ func NodeIsTolerable(node corev1.Node, tolerations []corev1.Toleration) bool {
 	for _, taint := range node.Spec.Taints {
 		isTolerated := false
 		for _, toleration := range tolerations {
-			if toleration.ToleratesTaint(&taint) {
+			// Keep the historical matching behavior: comparison operators are
+			// disabled because they were not supported by the previous API.
+			if toleration.ToleratesTaint(klog.Background(), &taint, false) {
 				isTolerated = true
 				break
 			}
