@@ -32,3 +32,5 @@ tags
 # Ancientt project related files
 /ancientt
 /testdefinition.yaml
+
+.diirenv/
